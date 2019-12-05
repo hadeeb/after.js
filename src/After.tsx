@@ -95,10 +95,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
   render() {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
-    const initialData = this.prefetcherCache[location.pathname] || data;
+    const locationToRender = previousLocation || location;
+    const initialData = this.prefetcherCache[locationToRender.pathname] || data;
 
     return (
-      <Switch location={previousLocation || location}>
+      <Switch location={locationToRender}>
 				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
 				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
         {getAllRoutes(this.props.routes).map((r, i) => (
