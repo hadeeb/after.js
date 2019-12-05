@@ -16,22 +16,24 @@ export interface AfterpartyProps extends RouteComponentProps<any> {
 export interface AfterpartyState {
   data?: Promise<any>[];
   previousLocation: Location | null;
+  nextLocation: Location | null;
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-	prefetcherCache: any;
-	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+  prefetcherCache: any;
+  NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 
   constructor(props: AfterpartyProps) {
     super(props);
 
     this.state = {
       data: props.data,
-      previousLocation: null
+      previousLocation: null,
+      nextLocation: null
     };
 
-		this.prefetcherCache = {};
-		this.NotfoundComponent = get404Component(this.props.routes)
+    this.prefetcherCache = {};
+    this.NotfoundComponent = get404Component(this.props.routes)
   }
 
   // only runs clizzient
@@ -40,8 +42,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
     if (navigated) {
       // save the location and data so we can render the old screen
       // first we try to use previousLocation and then location from props
+      // save next location so we know when the user navigates to another page
+      // before this navigation is complete
       this.setState({
         previousLocation: this.state.previousLocation || this.props.location,
+        nextLocation: nextProps.location
       });
 
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
@@ -52,9 +57,9 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         ...rest
       })
         .then(({ data }) => {
-          // if data is not for current location just don't do anything
-          if (location !== nextProps.location) {
-            return  
+          // nextLocation has changed after this call, so don't do anything
+          if (this.state.nextLocation && location !== this.state.nextLocation) {
+            return
           }
 
           // Only for page changes, prevent scroll up for anchor links
@@ -63,7 +68,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               this.state.previousLocation.pathname) !==
             nextProps.location.pathname
           ) {
-          window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
           }
           this.setState({ previousLocation: null, data });
         })
