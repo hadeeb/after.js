@@ -44,7 +44,6 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         previousLocation: this.state.previousLocation || this.props.location,
       });
 
-      const { location: currentLocation } = this.props
       const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
@@ -54,6 +53,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       })
         .then(({ data }) => {
           // if data is not for current location just don't do anything
+          const { location: currentLocation } = this.props
           if (currentLocation !== nextProps.location) {
             return  
           }
