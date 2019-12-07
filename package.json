@@ -24,31 +24,13 @@
     "start": "tsdx watch --tsconfig tsconfig.build.json",
     "format": "tsdx lint src --fix",
     "precommit": "lint-staged",
-    "test": "razzle test --env=jsdom --no-cache",
+    "test": "tsdx test",
     "test:ci": "CI=true yarn test"
   },
   "lint-staged": {
     "*.js": [
       "tsdx lint --fix",
       "git add"
-    ]
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "<rootDir>/src/test/**/*test.ts?(x)"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "collectCoverageFrom": [
-      "**/*.js"
     ]
   },
   "peerDependencies": {
@@ -71,13 +53,11 @@
     "husky": "^3.1.0",
     "jest": "^23.6.0",
     "lint-staged": "^9.5.0",
-    "razzle": "^2.4.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^5.1.2",
     "serialize-javascript": "^1.5.0",
-    "ts-jest": "^24.2.0",
     "tsdx": "^0.11.0"
   }
 }

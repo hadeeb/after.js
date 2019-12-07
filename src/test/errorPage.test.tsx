@@ -1,4 +1,4 @@
-import { render as renderPage } from "../render";
+import { render as renderPage, AfterRenderOptions } from "../render";
 import { Helmet } from "react-helmet";
 
 import Home from "./components/Home";
@@ -9,7 +9,7 @@ import AsyncNotFound from "./components/AsyncNotFoundComponent";
 import DefaultNotFoundComponent from "../NotFoundComponent";
 
 function render({ url, ...params }) {
-  return renderPage({ req: { url }, ...params });
+  return renderPage({ req: { url }, ...params } as AfterRenderOptions<any>);
 }
 
 describe("ErrorPage", () => {

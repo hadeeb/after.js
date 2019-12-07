@@ -1,5 +1,4 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 
 class AsyncRedirectComponent extends React.Component {
   static displayName = "AsyncRedirectComponent";

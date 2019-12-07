@@ -7,10 +7,13 @@
     "jsx": "react",
     "target": "es5",
     "module": "es2015",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true
   },
   "exclude": [
-    "build",
+    "dist",
     "node_modules",
     "coverage",
     "config",
