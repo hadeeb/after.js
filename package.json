@@ -6,10 +6,12 @@
   "repository": "jaredpalmer/after.js",
   "author": "Jared Palmer <jared@palmer.net>",
   "license": "MIT",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/after.esm.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
   "files": [
-    "build",
+    "dist",
     "after.js",
     "document.js",
     "asyncComponent.js",
@@ -18,16 +20,16 @@
     "loadInitialProps.js"
   ],
   "scripts": {
-    "prepare": "tsc -p tsconfig.build.json",
-    "start": "tsc -p tsconfig.build.json -w",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'",
+    "prepare": "tsdx build --tsconfig tsconfig.build.json",
+    "start": "tsdx watch --tsconfig tsconfig.build.json",
+    "format": "tsdx lint src --fix",
     "precommit": "lint-staged",
     "test": "razzle test --env=jsdom --no-cache",
     "test:ci": "CI=true yarn test"
   },
   "lint-staged": {
     "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write",
+      "tsdx lint --fix",
       "git add"
     ]
   },
@@ -63,8 +65,7 @@
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-helmet": "^5.0.3",
-    "@types/react-router": "^4.4.5",
-    "@types/react-router-dom": "^4.3.4",
+    "@types/react-router-dom": "^5.1.3",
     "@types/serialize-javascript": "^1.3.2",
     "express": "^4.16.2",
     "husky": "^0.14.3",
@@ -74,12 +75,9 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-helmet": "^5.2.0",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "^5.1.2",
     "serialize-javascript": "^1.5.0",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.7.0",
-    "tslint-react": "^3.4.0",
-    "typescript": "^2.8.1"
+    "ts-jest": "^24.2.0",
+    "tsdx": "^0.11.0"
   }
 }

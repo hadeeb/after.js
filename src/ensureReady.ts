@@ -5,8 +5,8 @@ import { isLoadableComponent } from './utils';
 /**
  * This helps us to make sure all the async code is loaded before rendering.
  */
-export async function ensureReady(routes: AsyncRouteProps[], pathname?: string) {
-  await Promise.all(
+export function ensureReady(routes: AsyncRouteProps[], pathname?: string) {
+  const prefetch = Promise.all(
     routes.map(route => {
       const match = matchPath(pathname || window.location.pathname, route);
       if (match && route && route.component && isLoadableComponent(route.component) && route.component.load) {
@@ -16,10 +16,10 @@ export async function ensureReady(routes: AsyncRouteProps[], pathname?: string) 
     })
   );
 
-  let data;
+  let data: any;
   if (typeof window !== undefined && !!document) {
     // deserialize state from 'serialize-javascript' format
     data = eval('(' + (document as any).getElementById('server-app-state').textContent + ')');
   }
-  return Promise.resolve(data);
+  return prefetch.then(() => data);
 }

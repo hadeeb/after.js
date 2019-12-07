@@ -5,3 +5,5 @@ package-lock.json
 build
 .vscode
 *.map
+.rts2*
+dist

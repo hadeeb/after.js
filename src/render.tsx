@@ -41,9 +41,9 @@ export async function render<T>(options: AfterRenderOptions<T>) {
     const defaultRenderer = (element: React.ReactElement<T>) => ({ html: ReactDOMServer.renderToString(element) });
     const renderer = customRenderer || defaultRenderer;
     const asyncOrSyncRender = renderer(
-      <StaticRouter location={req.url} context={context}>
+      (<StaticRouter location={req.url} context={context}>
         {fn(After)({ routes: utils.getAllRoutes(routes), data })}
-      </StaticRouter>
+      </StaticRouter>) as React.ReactElement<T>
     );
 
     const renderedContent = utils.isPromise(asyncOrSyncRender) ? await asyncOrSyncRender : asyncOrSyncRender;

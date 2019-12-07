@@ -1,1 +1,1 @@
-module.exports = require('./build/ensureReady');
+module.exports = require('./dist/index').ensureReady;

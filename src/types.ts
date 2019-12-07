@@ -25,7 +25,7 @@ export interface Ctx<P> extends CtxBase {
 }
 
 export interface AsyncRouteComponentState {
-  Component: AsyncRouteableComponent | null;
+  Component: AsyncRouteComponentType<any> | null;
 }
 
 export interface AsyncComponent {
@@ -47,6 +47,7 @@ export type AsyncRouteableComponent<Props = any> =
   | React.ComponentType<Props>;
 
 export interface AsyncRouteProps<Props = any> extends RouteProps {
+  path?: string;
   component: AsyncRouteableComponent<Props>;
   redirectTo?: string;
 }
