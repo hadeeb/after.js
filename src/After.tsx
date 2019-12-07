@@ -1,9 +1,16 @@
-import * as React from 'react';
-import { Switch, Route, withRouter, Redirect,  match as Match, RouteComponentProps } from 'react-router-dom';
-import { loadInitialProps } from './loadInitialProps';
-import { History, Location } from 'history';
-import { AsyncRouteProps } from './types';
-import { get404Component, getAllRoutes } from "./utils"
+import * as React from "react";
+import {
+  Switch,
+  Route,
+  withRouter,
+  Redirect,
+  match as Match,
+  RouteComponentProps
+} from "react-router-dom";
+import { loadInitialProps } from "./loadInitialProps";
+import { History, Location } from "history";
+import { AsyncRouteProps } from "./types";
+import { get404Component, getAllRoutes } from "./utils";
 
 export interface AfterpartyProps extends RouteComponentProps<any> {
   history: History;
@@ -19,8 +26,10 @@ export interface AfterpartyState {
 }
 
 class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
-	prefetcherCache: any;
-	NotfoundComponent:React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+  prefetcherCache: any;
+  NotfoundComponent:
+    | React.ComponentType<RouteComponentProps<any>>
+    | React.ComponentType<any>;
 
   constructor(props: AfterpartyProps) {
     super(props);
@@ -30,8 +39,8 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       previousLocation: null
     };
 
-		this.prefetcherCache = {};
-		this.NotfoundComponent = get404Component(this.props.routes)
+    this.prefetcherCache = {};
+    this.NotfoundComponent = get404Component(this.props.routes);
   }
 
   // only runs clizzient
@@ -41,11 +50,19 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
       // save the location and data so we can render the old screen
       // first we try to use previousLocation and then location from props
       this.setState({
-        previousLocation: this.state.previousLocation || this.props.location,
+        previousLocation: this.state.previousLocation || this.props.location
       });
 
-      const { location: currentLocation } = this.props
-      const { data, match, routes, history, location, staticContext, ...rest } = nextProps;
+      const { location: currentLocation } = this.props;
+      const {
+        data,
+        match,
+        routes,
+        history,
+        location,
+        staticContext,
+        ...rest
+      } = nextProps;
 
       loadInitialProps(this.props.routes, nextProps.location.pathname, {
         location: nextProps.location,
@@ -55,7 +72,7 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
         .then(({ data }) => {
           // if data is not for current location just don't do anything
           if (currentLocation !== nextProps.location) {
-            return  
+            return;
           }
 
           // Only for page changes, prevent scroll up for anchor links
@@ -64,11 +81,11 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
               this.state.previousLocation.pathname) !==
             nextProps.location.pathname
           ) {
-          window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
           }
           this.setState({ previousLocation: null, data });
         })
-        .catch((e) => {
+        .catch(e => {
           // @todo we should more cleverly handle errors???
           console.log(e);
         });
@@ -85,24 +102,34 @@ class Afterparty extends React.Component<AfterpartyProps, AfterpartyState> {
           [pathname]: data
         };
       })
-      .catch((e) => console.log(e));
+      .catch(e => console.log(e));
   };
 
   render() {
     const { previousLocation, data } = this.state;
     const { location } = this.props;
-     const initialData = this.prefetcherCache[(previousLocation || location).pathname] || data;
+    const initialData =
+      this.prefetcherCache[(previousLocation || location).pathname] || data;
 
     return (
       <Switch location={previousLocation || location}>
-				{initialData && initialData.statusCode && initialData.statusCode === 404 && <Route component={this.NotfoundComponent} path={location.pathname} />}
-				{initialData && initialData.redirectTo && initialData.redirectTo && <Redirect to={initialData.redirectTo} />}
+        {initialData &&
+          initialData.statusCode &&
+          initialData.statusCode === 404 && (
+            <Route
+              component={this.NotfoundComponent}
+              path={location.pathname}
+            />
+          )}
+        {initialData && initialData.redirectTo && initialData.redirectTo && (
+          <Redirect to={initialData.redirectTo} />
+        )}
         {getAllRoutes(this.props.routes).map((r, i) => (
           <Route
             key={`route--${i}`}
             path={r.path}
             exact={r.exact}
-            render={(props) =>
+            render={props =>
               React.createElement(r.component, {
                 ...initialData,
                 history: props.history,
