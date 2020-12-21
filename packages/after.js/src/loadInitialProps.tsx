@@ -2,7 +2,7 @@ import { matchPath, RouteProps } from 'react-router-dom';
 import { AsyncRouteProps, InitialProps, CtxBase } from './types';
 import { isAsyncComponent } from './utils';
 
-export async function loadInitialProps(
+export function loadInitialProps(
   routes: AsyncRouteProps[],
   pathname: string,
   ctx: CtxBase
@@ -33,8 +33,8 @@ export async function loadInitialProps(
     return !!match;
   });
 
-  return {
+  return Promise.all(promises).then(data => ({
     match: matchedComponent,
-    data: (await Promise.all(promises))[0],
-  };
+    data: data[0],
+  }));
 }
